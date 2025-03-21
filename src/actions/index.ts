@@ -1,10 +1,10 @@
+// this needs to be a server action
+"use server";
+
 import { db } from "@/db";
 import { redirect } from "next/navigation";
 
 export async function createSnippet(formData: FormData) {
-  // this needs to be a server action
-  "use server";
-
   // check the user's input and make sure they're valid
   const title = formData.get("title") as string;
   const code = formData.get("code") as string;
@@ -22,7 +22,19 @@ export async function createSnippet(formData: FormData) {
   redirect("/");
 }
 
+export async function editSnippet(id: number, code: string) {
+  await db.snippet.update({
+    where: { id },
+    data: { code },
+  });
 
-export async function editSnippet() {
-  'use server'
+  redirect(`/snippets/${id}`);
+}
+
+export async function deleteSnippet(id:number) {
+  await db.snippet.delete({
+    where: {id}
+  })
+
+  redirect('/')
 }
