@@ -1,6 +1,8 @@
+import { createSnippet } from "@/actions/action";
+
 export default function SnippetCreatePage() {
   return (
-    <form action="">
+    <form action={createSnippet}>
       <h3 className="font-bold m-3">Create a Snippet</h3>
       <div className="flex flex-col gap-4">
         <div className="flex gap-4">
@@ -20,6 +22,7 @@ export default function SnippetCreatePage() {
           </label>
           <textarea
             name="code"
+            required
             className="border rounded p-2 w-full"
             id="code"
           />
