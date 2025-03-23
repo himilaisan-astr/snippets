@@ -3,15 +3,15 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import * as actions from "@/actions";
 interface SnippetShowPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function SnippetShowPage(props: SnippetShowPageProps) {
-  await new Promise((r) => setTimeout(r, 2000));
+  await new Promise((r) => setTimeout(r, 1000));
 
-  const snippetId = parseInt(props.params.id, 10);
+  const snippetId = parseInt((await props.params).id, 10);
 
   const snippet = await db.snippet.findFirst({
     where: { id: snippetId },
@@ -46,4 +46,12 @@ export default async function SnippetShowPage(props: SnippetShowPageProps) {
       </pre>
     </div>
   );
+}
+
+export async function generateStaticParams() {
+  const snippets = await db.snippet.findMany();
+
+  return snippets.map((snippet) => {
+    return  {id: snippet.id.toString()}
+  })
 }

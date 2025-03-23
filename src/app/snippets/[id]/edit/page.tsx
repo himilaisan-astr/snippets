@@ -3,13 +3,13 @@ import { db } from "@/db";
 import { notFound } from "next/navigation";
 
 interface SnippetEditPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function SnippetEditPage(props: SnippetEditPageProps) {
-  const id = parseInt(props.params.id);
+  const id = parseInt((await props.params).id);
   const snippet = await db.snippet.findFirst({
     where: { id },
   });
